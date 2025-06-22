@@ -1,0 +1,19 @@
+CREATE TABLE posts (
+	id SERIAL PRIMARY KEY,
+	title TEXT NOT NULL,
+	text TEXT NOT NULL,
+	image_path TEXT,
+	likes_count INT DEFAULT 0
+);
+
+CREATE TABLE comments (
+	id SERIAL PRIMARY KEY,
+	post_id INT REFERENCES posts (id) ON DELETE CASCADE,
+	text TEXT NOT NULL
+);
+
+CREATE TABLE tags (
+	id SERIAL PRIMARY KEY,
+	post_id INT REFERENCES posts (id) ON DELETE CASCADE,
+	text TEXT NOT NULL
+);
