@@ -1,0 +1,39 @@
+# Gradle
+
+.gradle/
+build/
+
+# Eclipse 
+
+.classpath
+.project
+.settings/
+*.launch
+
+# IntelliJ IDEA
+ 
+.idea/
+*.iml
+
+# Windows OS
+
+Thumbs.db
+ehthumbs.db
+
+# Logs
+
+*.log
+*.tmp
+*.swp
+
+# Java
+
+*.class
+
+# Spring/Dev
+
+.factorypath
+
+# Uploaded files
+
+uploads/
