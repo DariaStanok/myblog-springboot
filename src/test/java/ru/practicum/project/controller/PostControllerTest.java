@@ -1,7 +1,5 @@
 package ru.practicum.project.controller;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -22,52 +20,46 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.web.servlet.MockMvc;
 
-import jakarta.servlet.ServletContext;
-import ru.practicum.project.configuration.MockedServicesConfiguration;
 import ru.practicum.project.model.Paging;
 import ru.practicum.project.model.Post;
 import ru.practicum.project.service.CommentService;
 import ru.practicum.project.service.PostService;
 
-
-@WebMvcTest(controllers = { PostController.class, HomeController.class })
-@Import(MockedServicesConfiguration.class)
-
-
+@WebMvcTest(controllers = {PostController.class, HomeController.class})
 class PostControllerTest {
 
 	@Autowired
-	private MockMvc mockMvc;
-	@Autowired
-    private ServletContext сontext;
-	@Autowired
-	private PostService postService;
-	@Autowired
-	private CommentService commentService;
-	private Post testPost;
+    private MockMvc mockMvc;
 
+    @MockBean//я так и не поняла как тестить вьюшки если Mокбин @Deprecated начиная с Spring Boot 3.2.0 без дублирования бинов в тестовой конфигурации
+    private PostService postService;
+
+    @MockBean
+    private CommentService commentService;
+
+    private Post testPost;
+    
 	@BeforeEach
 	void setup() {
 		
-	
 		testPost = new Post();
         testPost.setId(1L);
         testPost.setTitle("Test Post");
         testPost.setComments(new ArrayList<>());
         testPost.setTags(new ArrayList<>());
 	}
+	
+	@Test
+    void homeRedirectsToPosts() throws Exception {
+        mockMvc.perform(get("/"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/posts"));
+    }
 
-	 @Test
-	    void servletContextAvailable() {
-	        assertNotNull(сontext);
-	        assertTrue(сontext instanceof MockServletContext);
-
-	}
 	@Test
 	void postsPageTest() throws Exception { 
 	    when(postService.findAll(eq(""), any(Paging.class))).thenReturn(List.of(testPost));

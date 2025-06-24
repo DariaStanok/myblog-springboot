@@ -38,7 +38,7 @@ class PostServiceImplTest {
 	TagRepository tagRepository;
 	@TempDir
 	Path tempUploadDir;
-
+	
 	private PostServiceImpl postServiceImpl;
 
 	@BeforeEach
